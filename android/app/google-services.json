@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1050005859112",
+    "project_id": "mail-packet-f0288",
+    "storage_bucket": "mail-packet-f0288.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050005859112:android:be53abc822ed0f28863e1d",
+        "android_client_info": {
+          "package_name": "com.pawnest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0BzCZwdk3GraWk_k_PM94gL9cGl72oGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
