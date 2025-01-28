@@ -6,24 +6,24 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
-} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import Fonts from '../config/Fonts';
-import Colors from '../config/colors';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useNavigation} from '@react-navigation/native';
-import colors from '../config/colors';
-import FastImage from 'react-native-fast-image';
-import firebaseKeys from '../config/firebaseKeys';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+} from "react-native";
+import React, { useState, useEffect } from "react";
+import Fonts from "../config/Fonts";
+import Colors from "../config/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import colors from "../config/colors";
+import FastImage from "react-native-fast-image";
+import firebaseKeys from "../config/firebaseKeys";
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-} from 'react-native-reanimated';
-import {duration} from 'moment';
-const {width} = Dimensions.get('screen');
+} from "react-native-reanimated";
+import { duration } from "moment";
+const { width } = Dimensions.get("screen");
 // note always use TopComponent outside the safeAreaView
 const TopComponent = ({
   leftIcon = false,
@@ -50,7 +50,7 @@ const TopComponent = ({
   const insect = useSafeAreaInsets();
   const [showInputField, setShowInputField] = useState(false);
   const navigation = useNavigation();
-  const [userData, setUserData] = useState('');
+  const [userData, setUserData] = useState("");
   const animation = useSharedValue(0);
   const animatingStyle = useAnimatedStyle(() => {
     return {
@@ -65,12 +65,12 @@ const TopComponent = ({
       await firestore()
         .collection(firebaseKeys.user)
         .doc(auth()?.currentUser?.uid)
-        .onSnapshot(snap => {
+        .onSnapshot((snap) => {
           const data = snap.data();
           setUserData(data);
         });
     } catch (error) {
-      console.log('========ERROR IN GETTING CURRENT USER DATA=======', error);
+      console.log("========ERROR IN GETTING CURRENT USER DATA=======", error);
     }
   };
 
@@ -84,25 +84,27 @@ const TopComponent = ({
           styles.mainView,
           style,
           {
-            marginTop: Platform.OS == 'ios' ? insect.top : 18,
+            marginTop: Platform.OS == "ios" ? insect.top : 18,
           },
-        ]}>
+        ]}
+      >
         {/* {!showInputField && ( */}
         <>
           {leftIcon ? (
             <TouchableOpacity
               onPress={
-                onLeftIconPress == undefined || onLeftIconPress == ''
+                onLeftIconPress == undefined || onLeftIconPress == ""
                   ? () => navigation.goBack()
                   : onLeftIconPress
               }
-              style={styles.menueView}>
+              style={styles.menueView}
+            >
               <Image
                 style={[
                   styles.iconStyle,
-                  {height: 20, width: 20, resizeMode: 'contain'},
+                  { height: 20, width: 20, resizeMode: "contain" },
                 ]}
-                source={require('../assets/ic_goBack.png')}
+                source={require("../assets/ic_goBack.png")}
               />
             </TouchableOpacity>
           ) : (
@@ -114,30 +116,32 @@ const TopComponent = ({
                 // animation.value = animation.value === 1 ? 0 : 1;
                 setShowInputField(!showInputField);
               }}
-              style={styles.circleBackIcon}>
+              style={styles.circleBackIcon}
+            >
               <Image
                 style={[
                   styles.iconStyle,
-                  {height: 18, width: 18, resizeMode: 'contain'},
+                  { height: 18, width: 18, resizeMode: "contain" },
                 ]}
-                source={require('../assets/search.png')}
+                source={require("../assets/search.png")}
               />
             </TouchableOpacity>
           ) : null}
           {circleLeft ? (
             <TouchableOpacity
               onPress={
-                onLeftIconPress == undefined || onLeftIconPress == ''
+                onLeftIconPress == undefined || onLeftIconPress == ""
                   ? () => navigation.goBack()
                   : onCircleLeftIconPress
               }
-              style={styles.circleBackIcon}>
+              style={styles.circleBackIcon}
+            >
               <Image
                 style={[
                   styles.iconStyle,
-                  {height: 18, width: 18, resizeMode: 'contain'},
+                  { height: 18, width: 18, resizeMode: "contain" },
                 ]}
-                source={require('../assets/ic_goBack.png')}
+                source={require("../assets/ic_goBack.png")}
               />
             </TouchableOpacity>
           ) : null}
@@ -148,33 +152,34 @@ const TopComponent = ({
           )}
           {rightIcon ? (
             <TouchableOpacity onPress={onRightIconPress} style={styles.imgView}>
-              {userData.userImg !== '' ? (
+              {userData.userImg !== "" ? (
                 <FastImage
                   style={styles.img}
-                  source={{uri: userData.userImg}}
+                  source={{ uri: userData.userImg }}
                 />
               ) : (
-                <Image style={styles.img} source={'../assets/defaultImg.jpg'} />
+                <Image style={styles.img} source={"../assets/defaultImg.jpg"} />
               )}
             </TouchableOpacity>
           ) : !createBlacklist && !editBtn ? (
-            <View style={[styles.iconStyle, {height: 20, width: 18}]} />
+            <View style={[styles.iconStyle, { height: 20, width: 18 }]} />
           ) : null}
           {createBlacklist && (
             <TouchableOpacity
               onPress={onCreateBlacklistPress}
-              style={styles.menueView}>
+              style={styles.menueView}
+            >
               <Image
-                style={[styles.iconStyle, {height: 40, width: 40}]}
-                source={require('../assets/addAcc.png')}
+                style={[styles.iconStyle, { height: 40, width: 40 }]}
+                source={require("../assets/addAcc.png")}
               />
             </TouchableOpacity>
           )}
           {editBtn && (
             <TouchableOpacity onPress={onEditPress} style={styles.menueView}>
               <Image
-                style={[styles.iconStyle, {height: 40, width: 40}]}
-                source={require('../assets/editAcc.png')}
+                style={[styles.iconStyle, { height: 40, width: 40 }]}
+                source={require("../assets/editAcc.png")}
               />
             </TouchableOpacity>
           )}
@@ -186,7 +191,7 @@ const TopComponent = ({
         <View style={[styles.textInputField, animatingStyle]}>
           <TextInput
             value={value}
-            onChangeText={text => {
+            onChangeText={(text) => {
               setValue(text);
               if (searchFunction !== undefined) {
                 searchFunction(text);
@@ -197,10 +202,11 @@ const TopComponent = ({
             }}
             autoCapitalize="none"
             style={styles.textValues}
+            placeholder="Search name or email"
           />
           <TouchableOpacity
             onPress={() => {
-              setValue('');
+              setValue("");
               animation.value = animation.value === 1 ? 0 : 1;
               setTimeout(() => {
                 setShowInputField(false);
@@ -210,10 +216,11 @@ const TopComponent = ({
               }
             }}
             activeOpacity={1}
-            style={styles.closeButton}>
+            style={styles.closeButton}
+          >
             <Image
               style={styles.closeIcon}
-              source={require('../assets/ic_close.png')}
+              source={require("../assets/ic_close.png")}
             />
           </TouchableOpacity>
         </View>
@@ -227,15 +234,15 @@ export default TopComponent;
 const styles = StyleSheet.create({
   mainView: {
     marginHorizontal: 20,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
   },
   menueView: {
     height: 30,
     width: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   iconStyle: {
     height: 22,
@@ -244,14 +251,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontFamily: Fonts.regular24,
-    fontWeight: '600',
+    fontWeight: "600",
     color: Colors.white,
     right: 10,
   },
   circleBackIcon: {
     backgroundColor: colors.white,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 40,
     width: 40,
     borderRadius: 20,
@@ -269,28 +276,28 @@ const styles = StyleSheet.create({
   },
   textInputField: {
     backgroundColor: colors.white,
-    width: '90%',
+    width: "90%",
     height: 45,
     borderRadius: 10,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    overflow: 'hidden',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    overflow: "hidden",
   },
   textValues: {
-    width: '90%',
+    width: "90%",
     backgroundColor: colors.white,
-    height: '100%',
+    height: "100%",
     paddingHorizontal: 10,
   },
   closeButton: {
-    height: '100%',
+    height: "100%",
     backgroundColor: colors.green,
     width: 45,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     right: 5,
   },
   closeIcon: {
