@@ -10,6 +10,7 @@ import firebaseKeys from '../config/firebaseKeys';
 import MyIndicator from '../components/MyIndicator';
 import {useNavigation} from '@react-navigation/native';
 import AddFriendCard from '../components/AddFriendCard';
+import Header from '../components/Header';
 const AddFriends = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [showUsers, setShowUsers] = useState([]);
@@ -142,15 +143,9 @@ const AddFriends = () => {
   }, []);
   return (
     <View style={{flex: 1, backgroundColor: colors.caret}}>
-      <TopComponent
-        titleSty={{left: 0}}
-        rightIcon={true}
-        searchIcon={true}
-        value={searchText}
+      <Header
         setValue={setSearchText}
-        handleClosePress={() => {
-          setAllUsers(showUsers);
-        }}
+        value={searchText}
         searchFunction={searchRequests}
         title={language.t('addFriend')}
       />

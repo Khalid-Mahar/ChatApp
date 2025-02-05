@@ -1,9 +1,9 @@
-import { StyleSheet, Image, Text, View, Platform } from "react-native";
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Fonts from "../config/Fonts";
-import colors from "../config/colors";
-import screens from "../config/AllScreens";
+import {StyleSheet, Image, Text, View, Platform} from 'react-native';
+import React from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Fonts from '../config/Fonts';
+import colors from '../config/colors';
+import screens from '../config/AllScreens';
 const tab = createBottomTabNavigator();
 const Tabbar = () => {
   return (
@@ -16,27 +16,25 @@ const Tabbar = () => {
           height: 80.72,
           backgroundColor: colors.black,
         },
-      }}
-    >
+      }}>
       <tab.Screen
         name="HomeTab"
         component={screens.homeScreen}
         options={{
-          tabBarIcon: ({ focused }) => {
+          tabBarIcon: ({focused}) => {
             return (
               <View
                 style={[
                   styles.iconMainview,
-                  { marginTop: Platform.OS === "ios" ? "10%" : 0 },
-                ]}
-              >
+                  {marginTop: Platform.OS === 'ios' ? '10%' : 0},
+                ]}>
                 <Image
                   style={[
                     styles.iconStyle,
-                    { tintColor: focused ? colors.caret : colors.white },
+                    {tintColor: focused ? colors.caret : colors.white},
                   ]}
                   resizeMode="contain"
-                  source={require("../assets/home.png")}
+                  source={require('../assets/home.png')}
                 />
               </View>
             );
@@ -47,14 +45,13 @@ const Tabbar = () => {
         name="CallTab"
         component={screens.call}
         options={{
-          tabBarIcon: ({ focused }) => {
+          tabBarIcon: ({focused}) => {
             return (
               <View
                 style={[
                   styles.iconMainview,
-                  { marginTop: Platform.OS === "ios" ? "10%" : 0 },
-                ]}
-              >
+                  {marginTop: Platform.OS === 'ios' ? '10%' : 0},
+                ]}>
                 <Image
                   style={[
                     {
@@ -64,7 +61,7 @@ const Tabbar = () => {
                       marginTop: 10,
                     },
                   ]}
-                  source={require("../assets/phone-call.png")}
+                  source={require('../assets/phone-call.png')}
                 />
               </View>
             );
@@ -75,20 +72,19 @@ const Tabbar = () => {
         name="ProfileTab"
         component={screens.profile}
         options={{
-          tabBarIcon: ({ focused }) => {
+          tabBarIcon: ({focused}) => {
             return (
               <View
                 style={[
                   styles.iconMainview,
-                  { marginTop: Platform.OS === "ios" ? "10%" : 0 },
-                ]}
-              >
+                  {marginTop: Platform.OS === 'ios' ? '10%' : 0},
+                ]}>
                 <Image
                   style={[
                     styles.iconStyle,
-                    { tintColor: focused ? colors.caret : colors.white },
+                    {tintColor: focused ? colors.caret : colors.white},
                   ]}
-                  source={require("../assets/add-friend.png")}
+                  source={require('../assets/add-friend.png')}
                 />
               </View>
             );
@@ -99,14 +95,13 @@ const Tabbar = () => {
         name="Setting"
         component={screens.settings}
         options={{
-          tabBarIcon: ({ focused }) => {
+          tabBarIcon: ({focused}) => {
             return (
               <View
                 style={[
                   styles.iconMainview,
-                  { marginTop: Platform.OS === "ios" ? "10%" : 0 },
-                ]}
-              >
+                  {marginTop: Platform.OS === 'ios' ? '10%' : 0},
+                ]}>
                 <Image
                   style={[
                     styles.iconStyle,
@@ -114,7 +109,7 @@ const Tabbar = () => {
                       tintColor: focused ? colors.caret : colors.white,
                     },
                   ]}
-                  source={require("../assets/settings.png")}
+                  source={require('../assets/settings.png')}
                 />
               </View>
             );
@@ -130,21 +125,21 @@ export default Tabbar;
 const styles = StyleSheet.create({
   tabBar: {
     height: 70,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     paddingHorizontal: 30,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.pureWhite,
   },
   iconMainview: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  iconStyle: { marginTop: 10, height: 30, width: 30, resizeMode: "contain" },
+  iconStyle: {marginTop: 10, height: 30, width: 30, resizeMode: 'contain'},
   text: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
     fontFamily: Fonts.poppin_medium,
     color: colors.lightGray,
   },

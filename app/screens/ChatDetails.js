@@ -9,6 +9,7 @@ import MsgCard from '../components/MsgCard';
 import colors from '../config/colors';
 import TopComponent from '../components/TopComponent';
 import language from '../languages/index';
+import Header from '../components/Header';
 
 const ChatDetails = () => {
   const [allUsers, setAllUsers] = useState([]);
@@ -95,15 +96,11 @@ const ChatDetails = () => {
   };
   return (
     <View style={{flex: 1, backgroundColor: colors.caret}}>
-      <TopComponent
-        rightIcon={true}
-        titleSty={{left: 10}}
-        searchIcon={true}
+      <Header
         setValue={setSearchText}
         value={searchText}
         searchFunction={searchRequests}
         title={language.t('chatDetails')}
-        rightIconImage={require('../assets/userImage.jpg')}
       />
       <View style={commonSty.mainView}>
         {allUsers && (

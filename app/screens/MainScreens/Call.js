@@ -9,6 +9,9 @@ import auth from '@react-native-firebase/auth';
 import CallCard from '../../components/CallCard';
 import MyIndicator from '../../components/MyIndicator';
 import FriendCard from '../../components/FriendCard';
+import Fonts from '../../config/Fonts';
+import colors from '../../config/colors';
+import Header from '../../components/Header';
 const Call = () => {
   const commonSty = CommonStyle();
   const [allUsers, setAllUsers] = useState([]);
@@ -193,20 +196,12 @@ const Call = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: colors.caret}}>
-      <TopComponent
-        rightIcon={true}
-        titleSty={{left: 0}}
+      <Header
         setValue={setSearchText}
-        value={searchText}
         searchFunction2={searchRecomended}
-        handleClosePress={() => {
-          setAllUsers(searchUsers);
-          setRecomendedUsers(searchRecomendedUsers);
-        }}
+        value={searchText}
         searchFunction={searchRequests}
-        searchIcon={true}
         title={language.t('call')}
-        rightIconImage={require('../../assets/userImage.jpg')}
       />
       <View style={commonSty.mainView}>
         <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}>
@@ -221,6 +216,7 @@ const Call = () => {
               }}
             />
           </ScrollView>
+          <Text style={styles.header}>{language.t('allUsers')}</Text>
           <ScrollView
             horizontal
             scrollEnabled={false}
@@ -245,4 +241,12 @@ const Call = () => {
 
 export default Call;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  header: {
+    marginHorizontal: 20,
+    fontSize: 16,
+    fontFamily: Fonts.semibold24,
+    color: colors.black,
+    marginTop: 10,
+  },
+});

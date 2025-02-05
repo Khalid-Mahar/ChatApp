@@ -125,4 +125,7 @@ export default {
   phone: 'فون',
   audio: 'آڈیو',
   videoAndCallHis: 'ویڈیو اور کال کی تاریخ',
+  allUsers: 'تمام دوست',
+  packetMail: 'میل پیکٹ',
+  
 };

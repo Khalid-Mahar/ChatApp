@@ -126,4 +126,7 @@ export default {
   phone: 'Phone',
   audio: 'Audio',
   videoAndCallHis: 'Vidoe And Call History',
+  // new data
+  allUsers: 'All Friends',
+  packetMail: 'Mail Packet',
 };

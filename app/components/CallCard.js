@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useMemo, useState, useEffect} from 'react';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
@@ -135,6 +142,7 @@ const CallCard = ({item, showCallIcons = true, activeOpacity = 0.5}) => {
   useEffect(() => {
     getUserData();
   }, []);
+  const [loading, setLoading] = useState(true);
 
   return (
     <TouchableOpacity
@@ -145,7 +153,17 @@ const CallCard = ({item, showCallIcons = true, activeOpacity = 0.5}) => {
       style={styles.mainView}>
       <View style={styles.imageView}>
         <View>
+          {loading && (
+            <ActivityIndicator
+              size="small"
+              color={colors.primaryColor}
+              style={styles.loader}
+            />
+          )}
           <FastImage
+            onLoadStart={() => setLoading(true)}
+            onLoad={() => setLoading(false)}
+            onError={() => setLoading(false)}
             style={styles.mainImage}
             source={{uri: item.userData.userImg}}
           />
@@ -222,6 +240,13 @@ const CallCard = ({item, showCallIcons = true, activeOpacity = 0.5}) => {
 export default CallCard;
 
 const styles = StyleSheet.create({
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    zIndex: 1,
+    height: '100%',
+    width: '100%',
+  },
   mainView: {
     flexDirection: 'row',
     marginHorizontal: 20,

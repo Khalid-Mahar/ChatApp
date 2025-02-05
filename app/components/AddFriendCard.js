@@ -144,11 +144,26 @@ const AddFriendCard = ({item, onStatusPress}) => {
       console.log('=====ERROR IN FOLLOWING BACK=====', error);
     }
   };
+  const [imgloading, setImgLoading] = useState(true);
+
   return (
     <View style={styles.mainView}>
       <View style={styles.imageTextView}>
+        {imgloading && (
+          <ActivityIndicator
+            size="small"
+            color={colors.primaryColor}
+            style={styles.loader}
+          />
+        )}
         {item.userImg !== '' ? (
-          <FastImage style={styles.img} source={{uri: item.userImg}} />
+          <FastImage
+            style={styles.img}
+            onLoadStart={() => setImgLoading(true)}
+            onLoad={() => setImgLoading(false)}
+            onError={() => setImgLoading(false)}
+            source={{uri: item.userImg}}
+          />
         ) : (
           <Image
             style={styles.img}
@@ -184,6 +199,13 @@ const AddFriendCard = ({item, onStatusPress}) => {
 export default AddFriendCard;
 
 const styles = StyleSheet.create({
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    zIndex: 1,
+    height: '100%',
+    width: '100%',
+  },
   mainView: {
     flexDirection: 'row',
     justifyContent: 'space-between',

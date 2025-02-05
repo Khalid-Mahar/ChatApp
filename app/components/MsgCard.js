@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState, useEffect, useMemo} from 'react';
 import Fonts from '../config/Fonts';
 import colors from '../config/colors';
@@ -46,6 +53,7 @@ const MsgCard = React.memo(({item, onPress}) => {
     const routeData = generateUserId(auth().currentUser.uid, reciverId);
     navigation.navigate('Chat', {routeData, userData: item.userData});
   };
+  const [loading, setLoading] = useState(true);
   return (
     <TouchableOpacity
       onPress={() => {
@@ -54,8 +62,18 @@ const MsgCard = React.memo(({item, onPress}) => {
       style={styles.mainView}>
       <View style={styles.imageTextView}>
         <View style={styles.avatarView}>
+          {loading && (
+            <ActivityIndicator
+              size="small"
+              color={colors.primaryColor}
+              style={styles.loader}
+            />
+          )}
           <FastImage
             style={styles.img}
+            onLoadStart={() => setLoading(true)}
+            onLoad={() => setLoading(false)}
+            onError={() => setLoading(false)}
             source={{uri: item?.userData?.userImg}}
           />
 
@@ -160,6 +178,13 @@ const MsgCard = React.memo(({item, onPress}) => {
 export default MsgCard;
 
 const styles = StyleSheet.create({
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    zIndex: 1,
+    height: '100%',
+    width: '100%',
+  },
   mainView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -175,6 +200,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 2,
     borderColor: colors.lightGrey,
+    backgroundColor: colors.lightGrey,
   },
   img: {height: '100%', width: '100%', borderRadius: 50},
   imageTextView: {

@@ -1,5 +1,12 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import Fonts from '../config/Fonts';
 import colors from '../config/colors';
 import {useNavigation} from '@react-navigation/native';
@@ -19,6 +26,8 @@ const FriendCard = ({item, isFromHome = false}) => {
       navigation.navigate(screenNames.chat, {routeData, userData: item});
     }
   }
+  const [loading, setLoading] = useState(true);
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -27,7 +36,20 @@ const FriendCard = ({item, isFromHome = false}) => {
       style={styles.mainView}>
       <View style={styles.imageTextView}>
         <View>
-          <FastImage style={styles.img} source={{uri: item.userImg}} />
+          {loading && (
+            <ActivityIndicator
+              size="small"
+              color={colors.primaryColor}
+              style={styles.loader}
+            />
+          )}
+          <FastImage
+            onLoadStart={() => setLoading(true)}
+            onLoad={() => setLoading(false)}
+            onError={() => setLoading(false)}
+            style={styles.img}
+            source={{uri: item.userImg}}
+          />
           {item?.activeStatus == 'online' ? (
             <View
               style={{
@@ -55,6 +77,13 @@ const FriendCard = ({item, isFromHome = false}) => {
 export default FriendCard;
 
 const styles = StyleSheet.create({
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    zIndex: 1,
+    height: '100%',
+    width: '100%',
+  },
   mainView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -63,7 +92,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
-  img: {height: 60, width: 60, borderRadius: 30},
+  img: {
+    height: 60,
+    width: 60,
+    borderRadius: 30,
+    backgroundColor: colors.lightGray,
+  },
   imageTextView: {
     flexDirection: 'row',
     alignItems: 'center',

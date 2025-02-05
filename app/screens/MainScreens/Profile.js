@@ -9,6 +9,7 @@ import auth from '@react-native-firebase/auth';
 import firebaseKeys from '../../config/firebaseKeys';
 import FriendCard from '../../components/FriendCard';
 import MyIndicator from '../../components/MyIndicator';
+import Header from '../../components/Header';
 const Profile = ({navigation}) => {
   const commonSty = CommonStyle();
   const [allUsers, setAllUsers] = useState([]);
@@ -143,21 +144,12 @@ const Profile = ({navigation}) => {
   };
   return (
     <View style={{flex: 1, backgroundColor: colors.caret}}>
-      <TopComponent
-        titleSty={{left: 0}}
-        createBlacklist={true}
-        searchIcon={true}
-        handleClosePress={() => {
-          setAllUsers(searchUsers);
-        }}
-        value={searchText}
+      <Header
         setValue={setSearchText}
+        value={searchText}
         searchFunction={searchRequests}
-        onCreateBlacklistPress={() =>
-          navigation.navigate(screenNames.addFriends)
-        }
         title={language.t('contact')}
-        rightIconImage={require('../../assets/userImage.jpg')}
+        rightIconShow={true}
       />
       <View style={commonSty.mainView}>
         <FlatList

@@ -13,6 +13,7 @@ import useAuth from '../../auth/useAuth';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import firebaseKeys from '../../config/firebaseKeys';
+import Header from '../../components/Header';
 const Settings = ({navigation}) => {
   const [showModal, setShowModal] = useState(false);
   const [userData, setUserData] = useState('');
@@ -40,7 +41,7 @@ const Settings = ({navigation}) => {
   // Render Modal inline instead of using a separate function
   return (
     <View style={{flex: 1, backgroundColor: colors.caret}}>
-      <TopComponent circleLeft={true} title={language.t('settings')} />
+      <Header title={language.t('settings')} />
       <View style={commonSty.mainView}>
         <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}>
           <SetttingScreenHeader data={userData} />

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Image,
   StyleSheet,
@@ -5,132 +6,128 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import React from 'react';
-import InputText from '../../../components/InputText';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import colors from '../../../config/colors';
-import language from '../../../languages/index';
-import auth from '@react-native-firebase/auth';
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import auth from "@react-native-firebase/auth";
+
+const REPLY_ICONS = {
+  image: {
+    source: require("../../../assets/ic_image.png"),
+    label: "Image",
+  },
+  video: {
+    source: require("../../../assets/videoIcon.png"),
+    label: "Video",
+  },
+  doc: {
+    source: require("../../../assets/ic_document.png"),
+    label: "Document",
+  },
+  audio: {
+    source: require("../../../assets/ic_sound.png"),
+    label: "Voice",
+  },
+};
+
+const ReplyIcon = ({ messageType, icon, label }) => (
+  <View style={styles.messageReplyView}>
+    <Image
+      style={[styles.iconImage, messageType === "audio" && { width: 40 }]}
+      source={icon}
+    />
+    <Text style={styles.replyText}>{label}</Text>
+  </View>
+);
+
 const ChatInput = ({
   value,
   setValue,
   attachmentPress,
-  loader,
   _sendMessage,
-  onCameraPress,
   onMicPress,
   onPastePress,
-  replyId,
-  replyMessageType,
-  replyUserId,
-  replyText,
+  replyMessageType = "txt",
+  replyUserId = "",
+  replyText = "",
   closeReply,
   data,
+  containerStyle,
 }) => {
-  const insect = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();
+  const currentUser = auth().currentUser;
+
+  const renderReplyContent = () => {
+    if (replyMessageType === "txt") {
+      return (
+        <View style={styles.messageReplyView}>
+          <Text style={[styles.replyText, { marginLeft: 3 }]}>{replyText}</Text>
+        </View>
+      );
+    }
+
+    const replyInfo = REPLY_ICONS[replyMessageType];
+    return (
+      replyInfo && (
+        <ReplyIcon
+          messageType={replyMessageType}
+          icon={replyInfo.source}
+          label={replyInfo.label}
+        />
+      )
+    );
+  };
+
   return (
-    <View>
-      {replyText !== '' ? (
+    <View style={containerStyle}>
+      {replyText !== "" && (
         <View style={styles.replyParentView}>
           <View style={styles.replyNameView}>
-            {replyUserId == auth().currentUser.uid ? (
-              <Text style={styles.ReplyName}>{'You'}</Text>
-            ) : (
-              <Text style={styles.ReplyName}>{data.name}</Text>
-            )}
-            {replyMessageType == 'txt' && (
-              <View style={styles.messageReplyView}>
-                <Text style={[styles.replyText, {marginLeft: 3}]}>
-                  {replyText}
-                </Text>
-              </View>
-            )}
-            {replyMessageType == 'image' && (
-              <View style={styles.messageReplyView}>
-                <Image
-                  style={styles.iconImage}
-                  source={require('../../../assets/ic_image.png')}
-                />
-                <Text style={styles.replyText}>{language.t('image')}</Text>
-              </View>
-            )}
-            {replyMessageType == 'video' && (
-              <View style={styles.messageReplyView}>
-                <Image
-                  style={styles.iconImage}
-                  source={require('../../../assets/videoIcon.png')}
-                />
-                <Text style={styles.replyText}>{language.t('video')}</Text>
-              </View>
-            )}
-            {replyMessageType == 'doc' && (
-              <View style={styles.messageReplyView}>
-                <Image
-                  style={styles.iconImage}
-                  source={require('../../../assets/ic_document.png')}
-                />
-                <Text style={styles.replyText}>{language.t('document')}</Text>
-              </View>
-            )}
-            {replyMessageType == 'audio' && (
-              <View style={styles.messageReplyView}>
-                <Image
-                  style={[styles.iconImage, {width: 40}]}
-                  source={require('../../../assets/ic_sound.png')}
-                />
-                <Text style={styles.replyText}>{language.t('voice')}</Text>
-              </View>
-            )}
+            <Text style={styles.ReplyName}>
+              {replyUserId === currentUser?.uid ? "You" : data.name}
+            </Text>
+            {renderReplyContent()}
           </View>
           <TouchableOpacity onPress={closeReply} style={styles.closeIconView}>
             <Image
               style={styles.closeIcon}
-              source={require('../../../assets/close.png')}
+              source={require("../../../assets/close.png")}
             />
           </TouchableOpacity>
         </View>
-      ) : null}
+      )}
 
-      <View style={[styles.mainView]}>
-        <TouchableOpacity onPress={attachmentPress}>
+      <View style={styles.mainView}>
+        <TouchableOpacity style={styles.iconButton} onPress={attachmentPress}>
           <Image
             style={styles.iconStyle}
-            source={require('../../../assets/attachment.png')}
+            source={require("../../../assets/attachment.png")}
           />
         </TouchableOpacity>
         <View style={styles.inputTextView}>
           <TextInput
             value={value}
-            setValue={setValue}
-            placeholderTextColor={colors.boderColor}
-            placeholder={language.t('writeMsg')}
-            onChangeText={text => setValue(text)}
+            placeholder="Write a message..."
+            placeholderTextColor="#999"
+            onChangeText={setValue}
             style={styles.inputView}
           />
-          <TouchableOpacity onPress={onPastePress}>
+          {/* <TouchableOpacity style={styles.iconButton} onPress={onPastePress}>
             <Image
               style={styles.iconStyle}
-              source={require('../../../assets/paste.png')}
+              source={require("../../../assets/paste.png")}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
-        {/* <TouchableOpacity onPress={onCameraPress}>
+        <TouchableOpacity style={styles.iconButton} onPress={onMicPress}>
           <Image
             style={styles.iconStyle}
-            source={require('../../../assets/camera.png')}
-          />
-        </TouchableOpacity> */}
-        <TouchableOpacity onPress={onMicPress}>
-          <Image
-            style={styles.iconStyle}
-            source={require('../../../assets/microphone.png')}
+            source={require("../../../assets/microphone.png")}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={_sendMessage}>
+        <TouchableOpacity style={styles.iconButton} onPress={_sendMessage}>
           <Image
-            style={[styles.iconStyle, {tintColor: colors.caret}]}
-            source={require('../../../assets/send.png')}
+            style={[styles.iconStyle, { tintColor: "#007AFF" }]}
+            source={require("../../../assets/send.png")}
           />
         </TouchableOpacity>
       </View>
@@ -138,120 +135,94 @@ const ChatInput = ({
   );
 };
 
-export default ChatInput;
-
 const styles = StyleSheet.create({
   mainView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    height: 80,
-    backgroundColor: colors.white,
-    shadowColor: colors.grey,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    height: 80, // Reduced from 80
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#999",
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     marginHorizontal: 5,
     elevation: 5,
+    paddingHorizontal: 8, // Added padding
+  },
+  iconButton: {
+    padding: 8, // Added padding for larger touch target
+    justifyContent: "center",
+    alignItems: "center",
   },
   iconStyle: {
-    height: 25,
-    width: 25,
-    resizeMode: 'contain',
+    height: 22, // Slightly reduced from 25
+    width: 22, // Slightly reduced from 25
+    resizeMode: "contain",
   },
   inputTextView: {
-    backgroundColor: '#F3F6F6',
-    width: '70%',
-    height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
+    backgroundColor: "#F3F6F6",
+    width: "60%", // Reduced from 70%
+    height: 50, // Reduced from 50
+    flexDirection: "row",
+    alignItems: "center",
     borderRadius: 12,
     padding: 5,
+    marginHorizontal: 8, // Added margin
   },
   inputView: {
-    width: '90%',
-    height: '100%',
+    width: "100%", // Reduced from 90%
+    height: "100%",
     fontSize: 12,
-    color: colors.black,
+    color: "#000",
+    paddingHorizontal: 8, // Added padding
   },
-
-  //
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    // borderTopWidth: 1,
-    borderTopColor: colors.lightGrey,
-    // backgroundColor: 'green',
-  },
-  input: {
-    flex: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-    color: colors.textColor,
-  },
-  iconContainer: {
-    padding: 10,
-  },
-  icon: {
-    width: 24,
-    height: 24,
-    resizeMode: 'contain',
-  },
-  rightIconsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  // reply Style
   replyParentView: {
-    height: 60,
-    backgroundColor: colors.lightGrey,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+    height: 60, // Reduced from 60
+    backgroundColor: "#F3F6F6",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
     marginHorizontal: 10,
     paddingHorizontal: 10,
     borderRadius: 7,
+    marginBottom: 4, // Added margin
   },
   replyNameView: {},
   ReplyName: {
     fontSize: 15,
-    color: colors.caret,
-    fontFamily: Fonts.monaSans_semiBold,
+    color: "#007AFF",
   },
   closeIconView: {
-    height: 30,
-    width: 30,
-    backgroundColor: colors.primaryColor,
-    borderRadius: 18,
+    height: 26, // Reduced from 30
+    width: 26, // Reduced from 30
+    backgroundColor: "#007AFF",
+    borderRadius: 13,
+    justifyContent: "center",
+    alignItems: "center",
   },
   closeIcon: {
-    height: 30,
-    tintColor: colors.white,
-    width: 30,
+    height: 26,
+    width: 26,
+    tintColor: "#FFFFFF",
   },
   messageReplyView: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   replyText: {
     fontSize: 13,
-    fontFamily: Fonts.monaSans_Medium,
     marginLeft: 7,
     marginTop: 7,
-    color: colors.textColor,
+    color: "#333",
   },
   iconImage: {
     height: 20,
     width: 20,
     marginLeft: 3,
     marginTop: 7,
-    tintColor: colors.textColor,
+    tintColor: "#333",
   },
 });
+
+export default ChatInput;

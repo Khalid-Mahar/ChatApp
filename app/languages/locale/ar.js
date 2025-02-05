@@ -126,4 +126,6 @@ export default {
   phone: 'الهاتف',
   audio: 'الصوت',
   videoAndCallHis: 'الفيديو وسجل المكالمات',
+  allUsers: 'كل الأصدقاء',
+  packetMail: 'حزمة البريد',
 };

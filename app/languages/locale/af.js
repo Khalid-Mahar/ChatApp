@@ -126,4 +126,6 @@ export default {
   phone: 'Foon',
   audio: 'Oudio',
   videoAndCallHis: 'Video en Oproepgeskiedenis',
+  allUsers: 'Marafiki Wote',
+  packetMail: 'Pakiti ya Barua',
 };
